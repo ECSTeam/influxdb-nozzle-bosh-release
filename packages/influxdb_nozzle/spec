@@ -1,0 +1,7 @@
+---
+name: influxdb_nozzle
+
+dependencies: []
+
+files:
+- influxdb_nozzle/influxdb-nozzle.jar

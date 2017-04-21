@@ -1,0 +1,55 @@
+---
+name: deploy_nozzle
+templates:
+  deploy_nozzle.sh.erb: bin/run
+packages:
+- cf_cli
+- influxdb_nozzle
+properties:
+  domain:
+    description: 'CloudFoundry system domain'
+  app_domains:
+    description: 'CloudFoundry application domains'
+  org:
+    description: 'Org for the Application'
+    default: ''
+  space:
+    description: 'Space for the Application'
+    default: ''
+  instances:
+    description: 'Number of nozzle instances to run'
+    default: '3'
+  buildpack:
+    description: 'Buildpack to use when deploying the nozzle'
+  ssl.skip_cert_verify:
+    description: 'Whether to verify SSL certs when making web requests'
+  cf.admin_user:
+    description: 'Username of the CF admin user'
+  cf.admin_password:
+    description: 'Password of the CF admin user'
+  security.user:
+    description: 'Basic auth user'
+  security.password:
+    description: 'Basic auth password'
+  influxdb_nozzle_admin_client_id:
+    description: influxdb_nozzle_admin_client_id
+  influxdb_nozzle_admin_client_secret:
+    description: influxdb_nozzle_admin_client_secret
+  influxdb_nozzle_db_name:
+    description: The name of the Influx DB to which the nozzle will write its metrics
+  influxdb_nozzle_db_user:
+    description: influxdb_nozzle_db_user
+  influxdb_nozzle_db_password:
+    description: influxdb_nozzle_db_password
+  influxdb_nozzle_subscription_id:
+    description: ID the Firehose uses to load balance messages between instances. Should be unique from other nozzles
+  influxdb_nozzle_client_id:
+    description: A UAA client with `doppler.firehose` scope used to connect to the Firehose
+  influxdb_nozzle_client_secret:
+    description: influxdb_nozzle_client_secret
+  influxdb_nozzle_foundation:
+    description: (Optional) If set, all measurements sent to InfluxDB will have a `foundation` tag with this value
+  influxdb_nozzle_batch_size:
+    description: A higher number will reduce load on the InfluxDB server but will increase latency in receiving logs and will increase memory usage in the nozzle.
+  influxdb_nozzle_tag_fields:
+    description: Selected Firehose event fields will be saved as InfluxDB tags

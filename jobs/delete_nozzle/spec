@@ -1,0 +1,34 @@
+---
+name: delete_nozzle
+templates:
+  delete_nozzle.sh.erb: bin/run
+packages:
+- cf_cli
+- influxdb_nozzle
+properties:
+  domain:
+    description: 'CloudFoundry system domain'
+  app_domains:
+    description: 'CloudFoundry application domains'
+  org:
+    description: 'Org for the Application'
+    default: ''
+  space:
+    description: 'Space for the Application'
+    default: ''
+  ssl.skip_cert_verify:
+    description: 'Whether to verify SSL certs when making web requests'
+  cf.admin_user:
+    description: 'Username of the CF admin user'
+  cf.admin_password:
+    description: 'Password of the CF admin user'
+  apply_open_security_group:
+    description: 'Open security group for the app to access outside'
+    default: false
+  allow_paid_service_plans:
+    description: 'Allow use of paid service plans'
+    default: false
+  security.user:
+    description: 'Basic auth user'
+  security.password:
+    description: 'Basic auth password'
