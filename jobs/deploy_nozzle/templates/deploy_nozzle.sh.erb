@@ -148,7 +148,7 @@ function deploy_app() {
 	APP_HOST="$3"
 	HEALTH_CHECK="$6"
 	cf push ${APP_NAME} -n ${APP_HOST} -d ${APP_DOMAIN} \
-		-i ${INSTANCES} -b ${BUILDPACK}
+		-i ${INSTANCES} -b ${BUILDPACK} -p $PACKAGE_PATH/${PKG_NAME}/influxdb-nozzle.jar
 		--no-start
 	add_env_vars ${APP_NAME}
 }
