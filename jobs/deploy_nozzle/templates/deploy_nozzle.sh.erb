@@ -37,17 +37,17 @@ function import_opsmgr_variables() {
 	export BUILDPACK=<%= Shellwords.escape properties.buildpack %>
 	export VERSION=<%= Shellwords.escape properties.version %>
 
-	export INFLUXDB_NOZZLE_ADMIN_CLIENT_ID=<%= Shellwords.escape properties.influxdb_nozzle_admin_client_id %>
-	export INFLUXDB_NOZZLE_ADMIN_CLIENT_SECRET=<%= Shellwords.escape properties.influxdb_nozzle_admin_client_secret %>
-	export INFLUXDB_NOZZLE_DB_NAME=<%= Shellwords.escape properties.influxdb_nozzle_db_name %>
-	export INFLUXDB_NOZZLE_DB_USER=<%= Shellwords.escape properties.influxdb_nozzle_db_user %>
-	export INFLUXDB_NOZZLE_DB_PASSWORD=<%= Shellwords.escape properties.influxdb_nozzle_db_password %>
-	export INFLUXDB_NOZZLE_SUBSCRIPTION_ID=<%= Shellwords.escape properties.influxdb_nozzle_subscription_id %>
-	export INFLUXDB_NOZZLE_CLIENT_ID=<%= Shellwords.escape properties.influxdb_nozzle_client_id %>
-	export INFLUXDB_NOZZLE_CLIENT_SECRET=<%= Shellwords.escape properties.influxdb_nozzle_client_secret %>
-	export INFLUXDB_NOZZLE_FOUNDATION=<%= Shellwords.escape properties.influxdb_nozzle_foundation %>
-	export INFLUXDB_NOZZLE_BATCH_SIZE=<%= Shellwords.escape properties.influxdb_nozzle_batch_size %>
-	export INFLUXDB_NOZZLE_TAG_FIELDS=<%= Shellwords.escape properties.influxdb_nozzle_tag_fields %>
+	export INFLUXDB_NOZZLE_ADMIN_CLIENT_ID=<%= Shellwords.escape properties.influxdb.nozzle.admin_client_id %>
+	export INFLUXDB_NOZZLE_ADMIN_CLIENT_SECRET=<%= Shellwords.escape properties.influxdb.nozzle.admin_client_secret %>
+	export INFLUXDB_NOZZLE_DB_NAME=<%= Shellwords.escape properties.influxdb.nozzle.db_name %>
+	export INFLUXDB_NOZZLE_DB_USER=<%= Shellwords.escape properties.influxdb.nozzle.db_user %>
+	export INFLUXDB_NOZZLE_DB_PASSWORD=<%= Shellwords.escape properties.influxdb.nozzle.db_password %>
+	export INFLUXDB_NOZZLE_SUBSCRIPTION_ID=<%= Shellwords.escape properties.influxdb.nozzle.subscription_id %>
+	export INFLUXDB_NOZZLE_CLIENT_ID=<%= Shellwords.escape properties.influxdb.nozzle.client_id %>
+	export INFLUXDB_NOZZLE_CLIENT_SECRET=<%= Shellwords.escape properties.influxdb.nozzle.client_secret %>
+	export INFLUXDB_NOZZLE_FOUNDATION=<%= Shellwords.escape properties.influxdb.nozzle.foundation %>
+	export INFLUXDB_NOZZLE_BATCH_SIZE=<%= Shellwords.escape properties.influxdb.nozzle.batch_size %>
+	export INFLUXDB_NOZZLE_TAG_FIELDS=<%= Shellwords.escape properties.influxdb.nozzle.tag_fields %>
 	export INFLUXDB_NOZZLE_SKIP_SSL_VALIDATION=${CF_SKIP_SSL}
 }
 
