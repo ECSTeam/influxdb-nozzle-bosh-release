@@ -105,6 +105,8 @@ function setup_package_path() {
 }
 
 function add_env_vars() {
+	cf set-env $1 CC_HOST "$CF_TARGET"
+
 	# Custom variables from tile.yml
 	cf set-env $1 INFLUXDB_NOZZLE_ADMIN_CLIENT_ID "$INFLUXDB_NOZZLE_ADMIN_CLIENT_ID"
 	cf set-env $1 INFLUXDB_NOZZLE_ADMIN_CLIENT_SECRET "$INFLUXDB_NOZZLE_ADMIN_CLIENT_SECRET"
