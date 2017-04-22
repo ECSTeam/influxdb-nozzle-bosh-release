@@ -5,6 +5,7 @@ templates:
 packages:
 - cf_cli
 - influxdb_nozzle
+- jq
 properties:
   domain:
     description: 'CloudFoundry system domain'

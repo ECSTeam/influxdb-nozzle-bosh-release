@@ -132,17 +132,24 @@ function list_contains() {
 	echo "$HAYSTACK" | grep "^$NEEDLE\$" > /dev/null
 }
 
-function delete_older_versions() {
-	PKG_NAME="$1"
-	APP_NAME="$2"
+function cleanup() {
+	APP_NAME="$1"
 
-	# $CF delete -f $APP_NAME-venerable || :
-	# $CF rename $APP_NAME $APP_NAME-venerable || :
-	# $CF rename $APP_NAME-new $APP_NAME
-	# $CF stop $APP_NAME-venerable || :
-	# $CF unmap-route $APP_NAME-venerable $APP_DOMAIN -n $APP_NAME
-	space_guid=$(cat ${CF_HOME}/config.json | jq -r '.SpaceFields.GUID')
-	space_apps=$(cf curl /v2/spaces/${space_guid}/apps | jq -r '.resources[].entity.name')
+	space_guid=$(cat ${CF_HOME}/config.json | $JQ -r '.SpaceFields.GUID')
+	space_apps=$($CF curl /v2/spaces/${space_guid}/apps | $JQ -r '.resources[].entity.name')
+
+	if list_contains "${APP_NAME}-venerable" "${space_apps}"; then
+		$CF delete -f ${APP_NAME}-venerable
+	fi
+
+	if list_contains "${APP_NAME}" "${space_apps}"; then
+		$CF rename ${APP_NAME} ${APP_NAME}-venerable
+		$CF rename ${APP_NAME}-new ${APP_NAME}
+		$CF stop ${APP_NAME}-venerable
+		$CF unmap-route $APP_NAME-venerable $APP_DOMAIN -n $APP_NAME
+	else
+		$CF rename ${APP_NAME}-new ${APP_NAME}
+	fi
 }
 
 function wait_till_running() {
@@ -180,7 +187,7 @@ function start_app() {
 		exit $result
 	fi
 	wait_till_running ${APP_NAME}-new
-	delete_older_versions ${PKG_NAME} ${APP_NAME}
+	cleanup ${APP_NAME}
 }
 
 import_opsmgr_variables
