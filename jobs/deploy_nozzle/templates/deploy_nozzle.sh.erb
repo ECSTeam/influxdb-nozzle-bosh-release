@@ -35,7 +35,7 @@ function import_opsmgr_variables() {
 	export SECURITY_USER_PASSWORD=<%= Shellwords.escape properties.security.password %>
 	export INSTANCES=<%= Shellwords.escape properties.instances %>
 	export BUILDPACK=<%= Shellwords.escape properties.buildpack %>
-	
+
 	export INFLUXDB_NOZZLE_ADMIN_CLIENT_ID=<%= Shellwords.escape properties.influxdb.nozzle.admin_client_id %>
 	export INFLUXDB_NOZZLE_ADMIN_CLIENT_SECRET=<%= Shellwords.escape properties.influxdb.nozzle.admin_client_secret %>
 	export INFLUXDB_NOZZLE_DB_NAME=<%= Shellwords.escape properties.influxdb.nozzle.db_name %>
@@ -145,10 +145,10 @@ function wait_till_running() {
 }
 
 function deploy_app() {
-	PKG_NAME="$1"
-	APP_NAME="$2-new"
-	APP_HOST="$3"
-	HEALTH_CHECK="$6"
+	local PKG_NAME="$1"
+	local APP_NAME="$2-new"
+	local APP_HOST="$3"
+
 	cf push ${APP_NAME} -n ${APP_HOST} -d ${APP_DOMAIN} \
 		-i ${INSTANCES} -b ${BUILDPACK} -p $PACKAGE_PATH/${PKG_NAME}/influxdb-nozzle.jar \
 		--no-start
@@ -156,8 +156,8 @@ function deploy_app() {
 }
 
 function start_app() {
-	PKG_NAME="$1"
-	APP_NAME="$2"
+	local PKG_NAME="$1"
+	local APP_NAME="$2"
 	echo cf start ${APP_NAME}
 	$CF start ${APP_NAME}-new
 	result="$?"
