@@ -1,7 +1,8 @@
 #!/bin/bash
 
-export PATH="/var/vcap/packages/cf_cli/bin:$PATH"
+export PATH="/var/vcap/packages/cf_cli/bin:/var/vcap/packages/jq/bin:$PATH"
 export CF=`which cf`
+export JQ=`which jq`
 
 function cf() {
 	echo cf "$@"
@@ -105,6 +106,7 @@ function setup_package_path() {
 }
 
 function add_env_vars() {
+	# Environmental options that need to be set
 	cf set-env $1 CC_HOST "$CF_TARGET"
 
 	# Custom variables from tile.yml
@@ -123,15 +125,24 @@ function add_env_vars() {
 	cf set-env $1 SPRING_PROFILES_ACTIVE tile
 }
 
+function list_contains() {
+	local NEEDLE=$1
+	local HAYSTACK=$2
+
+	echo "$HAYSTACK" | grep "^$NEEDLE\$" > /dev/null
+}
+
 function delete_older_versions() {
 	PKG_NAME="$1"
 	APP_NAME="$2"
 
-	$CF delete -f $APP_NAME-venerable || :
-	$CF rename $APP_NAME $APP_NAME-venerable || :
-	$CF rename $APP_NAME-new $APP_NAME
-	$CF stop $APP_NAME-venerable || :
-	$CF unmap-route $APP_NAME-venerable $APP_DOMAIN -n $APP_NAME
+	# $CF delete -f $APP_NAME-venerable || :
+	# $CF rename $APP_NAME $APP_NAME-venerable || :
+	# $CF rename $APP_NAME-new $APP_NAME
+	# $CF stop $APP_NAME-venerable || :
+	# $CF unmap-route $APP_NAME-venerable $APP_DOMAIN -n $APP_NAME
+	space_guid=$(cat ${CF_HOME}/config.json | jq -r '.SpaceFields.GUID')
+	space_apps=$(cf curl /v2/spaces/${space_guid}/apps | jq -r '.resources[].entity.name')
 }
 
 function wait_till_running() {
