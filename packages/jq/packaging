@@ -3,4 +3,5 @@ set -e
 
 mkdir -p ${BOSH_INSTALL_TARGET}/bin
 cd jq
+chmod +x jq
 cp jq ${BOSH_INSTALL_TARGET}/bin/

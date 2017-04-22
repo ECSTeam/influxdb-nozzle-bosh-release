@@ -135,7 +135,7 @@ function list_contains() {
 function cleanup() {
 	APP_NAME="$1"
 
-	space_guid=$(cat ${CF_HOME}/config.json | $JQ -r '.SpaceFields.GUID')
+	space_guid=$(cat ${CF_HOME}/.cf/config.json | $JQ -r '.SpaceFields.GUID')
 	space_apps=$($CF curl /v2/spaces/${space_guid}/apps | $JQ -r '.resources[].entity.name')
 
 	if list_contains "${APP_NAME}-venerable" "${space_apps}"; then
