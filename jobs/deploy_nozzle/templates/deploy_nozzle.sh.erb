@@ -35,8 +35,7 @@ function import_opsmgr_variables() {
 	export SECURITY_USER_PASSWORD=<%= Shellwords.escape properties.security.password %>
 	export INSTANCES=<%= Shellwords.escape properties.instances %>
 	export BUILDPACK=<%= Shellwords.escape properties.buildpack %>
-	export VERSION=<%= Shellwords.escape properties.version %>
-
+	
 	export INFLUXDB_NOZZLE_ADMIN_CLIENT_ID=<%= Shellwords.escape properties.influxdb.nozzle.admin_client_id %>
 	export INFLUXDB_NOZZLE_ADMIN_CLIENT_SECRET=<%= Shellwords.escape properties.influxdb.nozzle.admin_client_secret %>
 	export INFLUXDB_NOZZLE_DB_NAME=<%= Shellwords.escape properties.influxdb.nozzle.db_name %>
