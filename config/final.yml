@@ -1,0 +1,6 @@
+---
+final_name: influxdb-nozzle-bosh-release
+blobstore:
+  provider: local
+  options:
+    blobstore_path: /tmp/influxdb-nozzle-bosh-release
