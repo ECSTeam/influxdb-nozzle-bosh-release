@@ -125,9 +125,12 @@ function add_env_vars() {
 function delete_older_versions() {
 	PKG_NAME="$1"
 	APP_NAME="$2"
-	$CF apps | grep "^$PKG_NAME" | grep -v "^$APP_NAME" | while read app rest; do
-		cf delete -f $app
-	done
+
+	$CF delete -f $APP_NAME-venerable || :
+	$CF rename $APP_NAME $APP_NAME-venerable || :
+	$CF rename $APP_NAME-new $APP_NAME
+	$CF stop $APP_NAME-venerable || :
+	$CF unmap-route $APP_NAME-venerable $APP_DOMAIN -n $APP_NAME
 }
 
 function wait_till_running() {
@@ -144,11 +147,11 @@ function wait_till_running() {
 
 function deploy_app() {
 	PKG_NAME="$1"
-	APP_NAME="$2"
+	APP_NAME="$2-new"
 	APP_HOST="$3"
 	HEALTH_CHECK="$6"
 	cf push ${APP_NAME} -n ${APP_HOST} -d ${APP_DOMAIN} \
-		-i ${INSTANCES} -b ${BUILDPACK} -p $PACKAGE_PATH/${PKG_NAME}/influxdb-nozzle.jar
+		-i ${INSTANCES} -b ${BUILDPACK} -p $PACKAGE_PATH/${PKG_NAME}/influxdb-nozzle.jar \
 		--no-start
 	add_env_vars ${APP_NAME}
 }
@@ -157,52 +160,15 @@ function start_app() {
 	PKG_NAME="$1"
 	APP_NAME="$2"
 	echo cf start ${APP_NAME}
-	$CF start ${APP_NAME}
+	$CF start ${APP_NAME}-new
 	result="$?"
 	if [ "$result" -ne "0" ]; then
-		echo cf logs ${APP_NAME} --recent
-		$CF logs ${APP_NAME} --recent
+		echo cf logs ${APP_NAME}-new --recent
+		$CF logs ${APP_NAME}-new --recent
 		exit $result
 	fi
-	wait_till_running ${APP_NAME}
+	wait_till_running ${APP_NAME}-new
 	delete_older_versions ${PKG_NAME} ${APP_NAME}
-}
-
-# Function for version comparison based on a code fragment from Stack Overflow
-# http://stackoverflow.com/questions/4023830/how-compare-two-strings-in-dot-separated-version-format-in-bash
-# By Dennis Williamson (http://stackoverflow.com/users/26428/dennis-williamson)
-#
-function is_newer() {
-	arg1=`echo "$1" | sed 's/\([0-9]+(\.[0-9]+)*\)/\1/'`
-	arg2=`echo "$2" | sed 's/\([0-9]+(\.[0-9]+)*\)/\1/'`
-	if [[ "$arg1" == "$arg2" ]]
-	then
-		return 0
-	fi
-	local IFS=.
-	local i ver1=($arg1) ver2=($arg2)
-	# fill empty fields in ver1 with zeros
-	for ((i=${#ver1[@]}; i<${#ver2[@]}; i++))
-	do
-		ver1[i]=0
-	done
-	for ((i=0; i<${#ver1[@]}; i++))
-	do
-		if [[ -z ${ver2[i]} ]]
-		then
-			# fill empty fields in ver2 with zeros
-			ver2[i]=0
-		fi
-		if ((10#${ver1[i]} > 10#${ver2[i]}))
-		then
-			return 0
-		fi
-		if ((10#${ver1[i]} < 10#${ver2[i]}))
-		then
-			return 1
-		fi
-	done
-	return 0
 }
 
 import_opsmgr_variables
@@ -214,7 +180,7 @@ add_target_org_to_admin
 setup_package_path
 
 export PKG_NAME=influxdb_nozzle
-export APP_NAME=influxdb-nozzle-${VERSION}
+export APP_NAME=influxdb-nozzle
 export APP_HOST=influxdb-nozzle
 deploy_app "$PKG_NAME" "$APP_NAME" "$APP_HOST"
 start_app influxdb-nozzle "$APP_NAME"
