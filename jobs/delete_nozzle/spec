@@ -22,13 +22,9 @@ properties:
     description: 'Username of the CF admin user'
   cf.admin_password:
     description: 'Password of the CF admin user'
-  apply_open_security_group:
-    description: 'Open security group for the app to access outside'
-    default: false
-  allow_paid_service_plans:
-    description: 'Allow use of paid service plans'
-    default: false
   security.user:
     description: 'Basic auth user'
+    default: ''
   security.password:
     description: 'Basic auth password'
+    default: ''
