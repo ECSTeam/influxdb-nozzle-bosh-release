@@ -48,6 +48,7 @@ function import_opsmgr_variables() {
 	export INFLUXDB_NOZZLE_FOUNDATION=<%= Shellwords.escape properties.influxdb.nozzle.foundation %>
 	export INFLUXDB_NOZZLE_BATCH_SIZE=<%= Shellwords.escape properties.influxdb.nozzle.batch_size %>
 	export INFLUXDB_NOZZLE_TAG_FIELDS=<%= Shellwords.escape properties.influxdb.nozzle.tag_fields %>
+	export INFLUXDB_NOZZLE_CAPTURED_EVENTS=<%= Shellwords.escape properties.influxdb.nozzle.captured_events %>
 	export INFLUXDB_NOZZLE_SKIP_SSL_VALIDATION=${CF_SKIP_SSL}
 }
 
@@ -121,6 +122,7 @@ function add_env_vars() {
 	cf set-env $1 INFLUXDB_NOZZLE_FOUNDATION "$INFLUXDB_NOZZLE_FOUNDATION"
 	cf set-env $1 INFLUXDB_NOZZLE_BATCH_SIZE "$INFLUXDB_NOZZLE_BATCH_SIZE"
 	cf set-env $1 INFLUXDB_NOZZLE_TAG_FIELDS "$INFLUXDB_NOZZLE_TAG_FIELDS"
+	cf set-env $1 INFLUXDB_NOZZLE_CAPTURED_EVENTS "$INFLUXDB_NOZZLE_CAPTURED_EVENTS"
 	cf set-env $1 INFLUXDB_NOZZLE_SKIP_SSL_VALIDATION "$INFLUXDB_NOZZLE_SKIP_SSL_VALIDATION"
 	cf set-env $1 SPRING_PROFILES_ACTIVE tile
 }

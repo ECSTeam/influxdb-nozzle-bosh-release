@@ -29,6 +29,8 @@ influxdb:
     batch_size: 250                 # The number of messages to batch before sending to InfluxDB. Must be [1,5000)
     tag_fields: "[]"                # A JSON array in string form with the fields that will be added as tags.
                                     # Currently valid values are 'job', 'index', 'ip', 'unit', 'deployment', 'tags'
+    captured_events: "[]"           # A JSON array in string form with the event types to capture.
+                                    # Currently valid values are 'VALUE_METRIC', 'COUNTER_EVENT', 'CONTAINER_METRIC', 'HTTP_START_STOP'
 buildpack: java_buildpack_offline   # The version of the Java buildpack to deploy the nozzle with
 instances: 3                        # The number of instances to deploy
 security:
